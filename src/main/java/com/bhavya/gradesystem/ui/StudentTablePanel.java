@@ -16,33 +16,50 @@ public class StudentTablePanel extends JPanel{
     private JTextField searchField;
 
     public StudentTablePanel() {
+
         setLayout(new BorderLayout());
+
         String[] columns = {"ID", "Name", "Email", "Major"};
         model = new DefaultTableModel(columns, 0);
 
+        // SEARCH PANEL
         searchField = new JTextField(20);
+
         JButton searchBtn = new JButton("Search");
         JButton clearBtn = new JButton("Clear");
-        searchBtn.addActionListener(e->searchStudents());
-        clearBtn.addActionListener(e->loadStudents());
+
+        searchBtn.addActionListener(e -> searchStudents());
+        clearBtn.addActionListener(e -> loadStudents());
+
         JPanel searchPanel = new JPanel();
+
         searchPanel.add(new JLabel("Search"));
         searchPanel.add(searchField);
         searchPanel.add(searchBtn);
         searchPanel.add(clearBtn);
+
         add(searchPanel, BorderLayout.NORTH);
 
+        // TABLE
         table = new JTable(model);
         add(new JScrollPane(table), BorderLayout.CENTER);
-        JButton deletebtn = new JButton("Delete Student");
-        deletebtn.addActionListener(e -> deleteStudent());
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.add(deletebtn);
-        add(bottomPanel, BorderLayout.SOUTH);
 
+        // BUTTON PANEL
+        JButton addBtn = new JButton("Add Student");
+        JButton deleteBtn = new JButton("Delete Student");
         JButton editBtn = new JButton("Edit Student");
-        editBtn.addActionListener(e->editStudent());
+
+        addBtn.addActionListener(e -> openAddStudentForm());
+        deleteBtn.addActionListener(e -> deleteStudent());
+        editBtn.addActionListener(e -> editStudent());
+
+        JPanel bottomPanel = new JPanel();
+
+        bottomPanel.add(addBtn);
         bottomPanel.add(editBtn);
+        bottomPanel.add(deleteBtn);
+
+        add(bottomPanel, BorderLayout.SOUTH);
 
         loadStudents();
     }
@@ -60,6 +77,12 @@ public class StudentTablePanel extends JPanel{
                     s.getMajor()
             });
         }
+    }
+
+    private void openAddStudentForm() {
+
+        AddStudentForm form = new AddStudentForm();
+        form.setVisible(true);
     }
 
     private void deleteStudent() {
