@@ -18,6 +18,11 @@ public class StudentTablePanel extends JPanel{
         model = new DefaultTableModel(columns, 0);
         table = new JTable(model);
         add(new JScrollPane(table), BorderLayout.CENTER);
+        JButton deletebtn = new JButton("Delete Student");
+        deletebtn.addActionListener(e -> deleteStudent());
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(deletebtn);
+        add(bottomPanel, BorderLayout.SOUTH);
         loadStudents();
     }
 
@@ -34,5 +39,21 @@ public class StudentTablePanel extends JPanel{
                     s.getMajor()
             });
         }
+    }
+
+    private void deleteStudent() {
+        int selectedRow = table.getSelectedRow();
+
+        if(selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a student to delete");
+            return;
+        }
+
+        int id = (int) model.getValueAt(selectedRow, 0);
+        StudentDAO dao = new StudentDAO();
+        dao.deleteStudent(id);
+
+        JOptionPane.showMessageDialog(this, "Student deleted");
+        loadStudents();
     }
 }
