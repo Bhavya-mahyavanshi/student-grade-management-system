@@ -39,6 +39,11 @@ public class StudentTablePanel extends JPanel{
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(deletebtn);
         add(bottomPanel, BorderLayout.SOUTH);
+
+        JButton editBtn = new JButton("Edit Student");
+        editBtn.addActionListener(e->editStudent());
+        bottomPanel.add(editBtn);
+
         loadStudents();
     }
 
@@ -87,5 +92,23 @@ public class StudentTablePanel extends JPanel{
                     s.getMajor()
             });
         }
+    }
+
+    private void editStudent() {
+        int selectedRow = table.getSelectedRow();
+
+        if(selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Select a student first");
+            return;
+        }
+
+        Student student = new Student();
+        student.setId((int) model.getValueAt(selectedRow, 0));
+        student.setName((String) model.getValueAt(selectedRow, 1));
+        student.setEmail((String) model.getValueAt(selectedRow, 2));
+        student.setMajor((String) model.getValueAt(selectedRow, 3));
+
+        EditStudentForm form = new EditStudentForm(student);
+        form.setVisible(true);
     }
 }

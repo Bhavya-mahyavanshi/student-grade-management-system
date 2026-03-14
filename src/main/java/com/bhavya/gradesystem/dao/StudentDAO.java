@@ -88,4 +88,20 @@ public class StudentDAO {
 
         return students;
     }
+
+    public void updateStudent(Student student) {
+        String sql = "UPDATE students SET name = ?, email = ?, major = ? WHERE id = ?";
+
+        try(Connection conn = DatabaseConnection.connect();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, student.getName());
+            stmt.setString(2, student.getEmail());
+            stmt.setString(3, student.getMajor());
+            stmt.setInt(4, student.getId());
+
+            stmt.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
