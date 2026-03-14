@@ -1,3 +1,4 @@
+
 package com.bhavya.gradesystem.ui;
 
 import com.bhavya.gradesystem.dao.StudentDAO;
@@ -8,14 +9,29 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+
 public class StudentTablePanel extends JPanel{
     private JTable table;
     private DefaultTableModel model;
+    private JTextField searchField;
 
     public StudentTablePanel() {
         setLayout(new BorderLayout());
         String[] columns = {"ID", "Name", "Email", "Major"};
         model = new DefaultTableModel(columns, 0);
+
+        searchField = new JTextField(20);
+        JButton searchBtn = new JButton("Search");
+        JButton clearBtn = new JButton("Clear");
+        searchBtn.addActionListener(e->searchStudents());
+        clearBtn.addActionListener(e->loadStudents());
+        JPanel searchPanel = new JPanel();
+        searchPanel.add(new JLabel("Search"));
+        searchPanel.add(searchField);
+        searchPanel.add(searchBtn);
+        searchPanel.add(clearBtn);
+        add(searchPanel, BorderLayout.NORTH);
+
         table = new JTable(model);
         add(new JScrollPane(table), BorderLayout.CENTER);
         JButton deletebtn = new JButton("Delete Student");
@@ -55,5 +71,21 @@ public class StudentTablePanel extends JPanel{
 
         JOptionPane.showMessageDialog(this, "Student deleted");
         loadStudents();
+    }
+
+    private void searchStudents() {
+        String keyword = searchField.getText();
+        StudentDAO dao = new StudentDAO();
+        List<Student> students = dao.searchStudents(keyword);
+        model.setRowCount(0);
+
+        for(Student s : students) {
+            model.addRow(new Object[] {
+                    s.getId(),
+                    s.getName(),
+                    s.getEmail(),
+                    s.getMajor()
+            });
+        }
     }
 }
