@@ -27,6 +27,7 @@ public class MainFrame extends JFrame {
         JButton studentsBtn = new JButton("Students");
         JButton coursesBtn = new JButton("Courses");
         JButton gradesBtn = new JButton("Grades");
+        JButton assignGradeBtn = new JButton("Assign Grade");
 
         navBar.add(studentsBtn);
         navBar.add(coursesBtn);
@@ -47,5 +48,9 @@ public class MainFrame extends JFrame {
 
         studentsBtn.addActionListener(e -> cardLayout.show(mainPanel,"students"));
         coursesBtn.addActionListener(e -> cardLayout.show(mainPanel,"courses"));
+        assignGradeBtn.addActionListener(e -> {
+            AssignGradeForm form = new AssignGradeForm();
+            form.setVisible(true);
+        });
     }
 }
